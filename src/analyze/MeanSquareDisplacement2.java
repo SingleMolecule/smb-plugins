@@ -53,6 +53,9 @@ public class MeanSquareDisplacement2 implements PlugIn {
 		if (dimensionality.equals("1D"))
 			dimensionalityFit = 2;
 		
+		if (maxFitTime == 0)
+			maxFitTime = Double.MAX_VALUE;
+		
 		ResultsTable sdTable = new ResultsTable();
 		sdTable.setPrecision(Analyzer.getPrecision());
 		
