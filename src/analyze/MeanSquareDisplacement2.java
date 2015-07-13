@@ -19,6 +19,7 @@ public class MeanSquareDisplacement2 implements PlugIn {
 	private String dimensionality = "2D";
 	private boolean averageTrajectories = false;
 	private int dimensionalityFit = 4;	// 2D
+	private boolean showFitPlots = false;
 	
 	@Override
 	public void run(String arg0) {
@@ -37,6 +38,7 @@ public class MeanSquareDisplacement2 implements PlugIn {
 		dialog.addNumericField("Fit_until (0 = all)", maxFitTime, 6, 10, "s");
 		dialog.addChoice("Diffusion_dimensionality", new String[]{"1D", "2D"}, dimensionality);
 		dialog.addCheckbox("Average_all_trajectories", averageTrajectories);
+		dialog.addCheckbox("Show_fit_plots", showFitPlots);
 		
 		dialog.showDialog();
 		
@@ -49,6 +51,7 @@ public class MeanSquareDisplacement2 implements PlugIn {
 		maxFitTime = dialog.getNextNumber();
 		dimensionality = dialog.getNextChoice();
 		averageTrajectories = dialog.getNextBoolean();
+		showFitPlots = dialog.getNextBoolean();
 		
 		if (dimensionality.equals("1D"))
 			dimensionalityFit = 2;
@@ -133,13 +136,15 @@ public class MeanSquareDisplacement2 implements PlugIn {
 			
 			stdDev = Math.sqrt(stdDev / (to - from));
 			
-			msdTable.incrementCounter();
+			if (to - from > minimumNumberOfPoints) {
+				msdTable.incrementCounter();
 			
-			msdTable.addValue("trajectory", sdTable.getValue("trajectory", from));
-			msdTable.addValue("dt", sdTable.getValue("dt", from));
-			msdTable.addValue("msd", mean);
-			msdTable.addValue("stdDev", stdDev);
-			msdTable.addValue("points", to - from);
+				msdTable.addValue("trajectory", sdTable.getValue("trajectory", from));
+				msdTable.addValue("dt", sdTable.getValue("dt", from));
+				msdTable.addValue("msd", mean);
+				msdTable.addValue("stdDev", stdDev);
+				msdTable.addValue("points", to - from);
+			}
 				
 		}
 		
@@ -161,13 +166,10 @@ public class MeanSquareDisplacement2 implements PlugIn {
 			double dt = msdTable.getValue("dt", row);
 			double msd = msdTable.getValue("msd", row);
 			double stdDev = msdTable.getValue("stdDev", row);
-			int points = (int)msdTable.getValue("points", row);
 			
-			if (points > minimumNumberOfPoints) {
-				dts.add(dt);
-				msds.add(msd);
-				stdDevs.add(stdDev);
-			}
+			dts.add(dt);
+			msds.add(msd);
+			stdDevs.add(stdDev);
 			
 			if (row + 1 >= msdTable.getCounter() || trajectory != msdTable.getValue("trajectory", row + 1)) {
 				
@@ -226,15 +228,19 @@ public class MeanSquareDisplacement2 implements PlugIn {
 					
 					fx[1] = t;
 					fy[1] = dimensionalityFit * p[0] * t;
-					
-					Plot plot = new Plot();
-					plot.addErrorBars(x, y, error, Color.GRAY, 1f);
-					plot.addScatterPlot(x, y, Color.BLACK, 1f);
-					
+										
 					if (!Double.isNaN(fy[1])) {
-						plot.addLinePlot(fx, fy, Color.RED, 1f);
-						plot.setCaption(" D = " + p[0] + " µm^2/s  fitting error = " + e[0] + " Trajectory = " + trajectory);
 						
+						if (showFitPlots) {
+							Plot plot = new Plot();
+							plot.addErrorBars(x, y, error, Color.GRAY, 1f);
+							plot.addScatterPlot(x, y, Color.BLACK, 1f);
+							plot.addLinePlot(fx, fy, Color.RED, 1f);
+							plot.setCaption(" D = " + p[0] + " µm^2/s  fitting error = " + e[0] + " Trajectory = " + trajectory);
+							plot.setxAxisLabel("Time Step (s)");
+							plot.setyAxisLabel("Mean Square Displacement (µm)");
+							plot.showPlot("Mean Square Displacement");
+						}
 						
 						dTable.incrementCounter();
 						dTable.addValue("trajectory", trajectory);
@@ -242,15 +248,7 @@ public class MeanSquareDisplacement2 implements PlugIn {
 						dTable.addValue("D_error", e[0]);
 						dTable.addValue("R^2", lm.rSquared);
 						
-						
 					}
-					else {
-						plot.setCaption("Could not fit! Trajectory = " + trajectory);
-					}
-					
-					plot.setxAxisLabel("Time Step (s)");
-					plot.setyAxisLabel("Mean Square Displacement (µm)");
-					plot.showPlot("Mean Square Displacement");
 					
 				}
 				
