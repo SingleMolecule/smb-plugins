@@ -94,6 +94,8 @@ public class MeanSquareDisplacement2 implements PlugIn {
 		}
 		
 		ResultsTableSorter.sort(sdTable, true, "trajectory", "dt");
+		sdTable.show("square displacements");
+		
 		
 		// find the start and end of each group (same dt and trajectory) that we need to average
 		// we need to calculate the mean square displacement for each dt, trajectory individually
