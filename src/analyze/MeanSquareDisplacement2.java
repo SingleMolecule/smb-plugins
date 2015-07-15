@@ -197,6 +197,8 @@ public class MeanSquareDisplacement2 implements PlugIn {
 						
 					}
 					
+					if (n == 0) continue;
+					
 					// fit data
 					LevenbergMarquardt lm = new LevenbergMarquardt() {
 						
