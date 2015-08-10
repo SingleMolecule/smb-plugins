@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>sc.fiji</groupId>
+		<artifactId>pom-fiji</artifactId>
+		<version>7.1.0</version>
+		<relativePath />
+	</parent>
+
+	<artifactId>single_molecule_biophysics</artifactId>
+	<inceptionYear>2015</inceptionYear>
+
+	<name>plugins/single_molecule_biophysics.jar</name>
+	<description>Single molecule biophysics plugins for data analysis in imageJ.</description>
+
+
+
+	<developers>
+		<developer>
+			<id>vcaldas</id>
+			<name>Victor E. A. Caldas</name>
+			<email>caldas.victor@gmail.com</email>
+			<url>http://vcaldas.github.io</url>
+			<organization>University of Groningen</organization>
+			<organizationUrl>http://singlemolecule.nl</organizationUrl>
+			<roles>
+				<role>developer</role>
+				<role>maintainer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+		<developer>
+			<id>cmpunter</id>
+			<name>C. Michiel Punter</name>
+			<organization>University of Groningen</organization>
+			<organizationUrl>http://singlemolecule.nl</organizationUrl>
+			<roles>
+				<role>developer</role>
+				<role>maintainer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+
+
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/SingleMolecule/smb-plugins
+			</connection>
+		<developerConnection>scm:git:git@github.com:SingleMolecule/smb-plugins
+			</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/SingleMolecule/smb-plugins
+</url>
+	</scm>
+
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/SingleMolecule/smb-plugins
+/issues</url>
+	</issueManagement>
+
+
+<repositories>
+		<!-- NB: for project parent -->
+		<repository>
+			<id>imagej.public</id>
+			<url>http://maven.imagej.net/content/groups/public</url>
+		</repository>
+	</repositories>
+
+
+<dependencies>
+		<!-- ImageJ dependencies -->
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij</artifactId>
+			<version>1.50a</version>
+		</dependency>
+</dependencies>
+
+
+
+
+
+
+
+</project>
